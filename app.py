@@ -1149,7 +1149,9 @@ elif page == "🔍 自动数据分析":
             # 显示数据类型分布
             st.subheader("📋 数据类型分布")
             dtype_counts = data.dtypes.value_counts()
-            fig = px.pie(values=dtype_counts.values, names=dtype_counts.index, title="数据类型分布")
+            # 将numpy数据类型转换为字符串，避免JSON序列化错误
+            dtype_names = [str(dtype) for dtype in dtype_counts.index]
+            fig = px.pie(values=dtype_counts.values, names=dtype_names, title="数据类型分布")
             st.plotly_chart(fig, use_container_width=True)
         
         elif analysis_tool == "sweetviz":
@@ -1180,7 +1182,6 @@ elif page == "🔍 自动数据分析":
                 st.plotly_chart(fig, use_container_width=True)
             else:
                 st.info("数据中数值变量不足，无法进行相关性分析。")
-                        st.error(f"❌ Pandas Profiling报告生成失败：{str(e)}")
 
 # 高级可视化页面
 elif page == "📈 高级可视化":

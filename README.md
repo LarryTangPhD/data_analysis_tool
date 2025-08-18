@@ -278,8 +278,9 @@ scikit-learn>=1.3.0    # 机器学习 / Machine learning
 ---
 
 **版本 / Version**: 3.0  
-**最后更新 / Last Updated**: 2024年 / 2024  
-**作者 / Author**: 智能数据分析团队 / Intelligent Data Analysis Team
+**最后更新 / Last Updated**: 2025年8月 / 2025.8  
+**作者 / Author**: Larry Tang / Intelligent Data Analysis Team
+**联系方式 / Contact Details**: tjn.chaos@qq.com
 
 ---
 

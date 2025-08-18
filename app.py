@@ -65,33 +65,11 @@ def calculate_data_quality_score(data):
     
     return max(score, 0)
 
-# 尝试导入ydata-profiling
-try:
-    from ydata_profiling import ProfileReport
-    YDATA_AVAILABLE = True
-except ImportError:
-    YDATA_AVAILABLE = False
-
-# 尝试导入sweetviz
-try:
-    import sweetviz as sv
-    SWEETVIZ_AVAILABLE = True
-except ImportError:
-    SWEETVIZ_AVAILABLE = False
-
-# 尝试导入pandas-profiling
-try:
-    from pandas_profiling import ProfileReport as PandasProfileReport
-    PANDAS_PROFILING_AVAILABLE = True
-except ImportError:
-    PANDAS_PROFILING_AVAILABLE = False
-
-# 导入streamlit-profiling组件
-try:
-    from streamlit_pandas_profiling import st_profile_report
-    ST_PROFILE_REPORT_AVAILABLE = True
-except ImportError:
-    ST_PROFILE_REPORT_AVAILABLE = False
+# 由于Python 3.13兼容性问题，暂时禁用这些包
+YDATA_AVAILABLE = False
+SWEETVIZ_AVAILABLE = False
+PANDAS_PROFILING_AVAILABLE = False
+ST_PROFILE_REPORT_AVAILABLE = False
 
 # 设置页面配置
 st.set_page_config(
@@ -338,15 +316,19 @@ if page == "🏠 首页":
     </div>
     """, unsafe_allow_html=True)
     
-    # 组件安装指南
-    if not YDATA_AVAILABLE or not SWEETVIZ_AVAILABLE or not ST_PROFILE_REPORT_AVAILABLE:
-        st.markdown("""
-        <div class="warning-box">
-            <h4>📦 组件安装指南</h4>
-            <p>为了获得最佳体验，请安装以下组件：</p>
-            <code>pip install ydata-profiling sweetviz pandas-profiling streamlit-pandas-profiling</code>
-        </div>
-        """, unsafe_allow_html=True)
+    # 组件兼容性说明
+    st.markdown("""
+    <div class="warning-box">
+        <h4>⚠️ 兼容性说明</h4>
+        <p>由于Python 3.13兼容性问题，部分高级分析功能暂时不可用：</p>
+        <ul>
+            <li>YData Profiling - 自动化数据分析</li>
+            <li>Sweetviz - 数据概览和比较</li>
+            <li>Pandas Profiling - 经典分析报告</li>
+        </ul>
+        <p>💡 建议使用'基础分析'功能进行数据分析。</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # 数据上传页面
 elif page == "📁 数据上传":
@@ -1147,118 +1129,57 @@ elif page == "🔍 自动数据分析":
             ["ydata-profiling", "sweetviz", "pandas-profiling"]
         )
         
-        if analysis_tool == "ydata-profiling" and YDATA_AVAILABLE:
-            st.subheader("📊 YData Profiling 分析")
+        if analysis_tool == "ydata-profiling":
+            st.subheader("📊 高级数据分析 (YData Profiling)")
+            st.warning("⚠️ 由于Python 3.13兼容性问题，YData Profiling功能暂时不可用。")
+            st.info("💡 请使用'基础分析'功能进行数据分析。")
             
-            # 配置选项
-            col1, col2 = st.columns(2)
+            # 显示基础统计信息作为替代
+            st.subheader("📈 数据概览")
+            col1, col2, col3, col4 = st.columns(4)
             with col1:
-                minimal = st.checkbox("最小化模式", value=False)
-                explorative = st.checkbox("探索性分析", value=True)
+                st.metric("行数", len(data))
             with col2:
-                # 修复slider的最小值和最大值问题
-                min_size = min(1000, len(data))
-                max_size = max(1000, len(data))
-                default_size = min(10000, len(data))
-                sample_size = st.slider("样本大小", min_size, max_size, default_size)
+                st.metric("列数", len(data.columns))
+            with col3:
+                st.metric("缺失值", data.isnull().sum().sum())
+            with col4:
+                st.metric("重复行", data.duplicated().sum())
             
-            if st.button("🚀 生成YData Profiling报告"):
-                with st.spinner("正在生成分析报告..."):
-                    try:
-                        # 创建配置文件
-                        config = {
-                            "title": "数据概览报告",
-                            "minimal": minimal,
-                            "explorative": explorative
-                        }
-                        
-                        # 生成报告
-                        profile = ProfileReport(data, **config)
-                        st.session_state.profile_report = profile
-                        
-                        # 显示报告
-                        if ST_PROFILE_REPORT_AVAILABLE:
-                            st_profile_report(profile)
-                        else:
-                            # 如果streamlit_pandas_profiling不可用，直接显示HTML
-                            html_report = profile.to_html()
-                            st.components.v1.html(html_report, height=800, scrolling=True)
-                        
-                        # 下载报告
-                        html_report = profile.to_html()
-                        st.download_button(
-                            label="📥 下载HTML报告",
-                            data=html_report,
-                            file_name="ydata_profiling_report.html",
-                            mime="text/html"
-                        )
-                        
-                    except Exception as e:
-                        st.error(f"❌ 报告生成失败：{str(e)}")
+            # 显示数据类型分布
+            st.subheader("📋 数据类型分布")
+            dtype_counts = data.dtypes.value_counts()
+            fig = px.pie(values=dtype_counts.values, names=dtype_counts.index, title="数据类型分布")
+            st.plotly_chart(fig, use_container_width=True)
         
-        elif analysis_tool == "sweetviz" and SWEETVIZ_AVAILABLE:
-            st.subheader("🍯 Sweetviz 分析")
+        elif analysis_tool == "sweetviz":
+            st.subheader("🍯 数据概览分析 (Sweetviz)")
+            st.warning("⚠️ 由于Python 3.13兼容性问题，Sweetviz功能暂时不可用。")
+            st.info("💡 请使用'基础分析'功能进行数据分析。")
             
-            # 配置选项
-            col1, col2 = st.columns(2)
-            with col1:
-                target_col = st.selectbox("选择目标变量（可选）", ['无'] + data.columns.tolist())
-            with col2:
-                compare_data = st.checkbox("比较数据集", value=False)
-            
-            if st.button("🚀 生成Sweetviz报告"):
-                with st.spinner("正在生成Sweetviz报告..."):
-                    try:
-                        if target_col == '无':
-                            report = sv.analyze(data)
-                        else:
-                            report = sv.analyze(data, target_col)
-                        
-                        # 保存报告
-                        report_path = "sweetviz_report.html"
-                        report.show_html(report_path)
-                        
-                        # 读取并显示报告
-                        with open(report_path, 'r', encoding='utf-8') as f:
-                            html_content = f.read()
-                        
-                        st.components.v1.html(html_content, height=800, scrolling=True)
-                        
-                        # 下载报告
-                        st.download_button(
-                            label="📥 下载Sweetviz报告",
-                            data=html_content,
-                            file_name="sweetviz_report.html",
-                            mime="text/html"
-                        )
-                        
-                    except Exception as e:
-                        st.error(f"❌ Sweetviz报告生成失败：{str(e)}")
+            # 显示数据质量评分
+            st.subheader("📊 数据质量评分")
+            quality_score = calculate_data_quality_score(data)
+            st.progress(quality_score / 100)
+            st.metric("数据质量评分", f"{quality_score:.1f}/100")
         
-        elif analysis_tool == "pandas-profiling" and PANDAS_PROFILING_AVAILABLE:
-            st.subheader("🐼 Pandas Profiling 分析")
+        elif analysis_tool == "pandas-profiling":
+            st.subheader("🐼 数据分析报告 (Pandas Profiling)")
+            st.warning("⚠️ 由于Python 3.13兼容性问题，Pandas Profiling功能暂时不可用。")
+            st.info("💡 请使用'基础分析'功能进行数据分析。")
             
-            if st.button("🚀 生成Pandas Profiling报告"):
-                with st.spinner("正在生成Pandas Profiling报告..."):
-                    try:
-                        profile = PandasProfileReport(data, title="Pandas Profiling Report")
-                        if ST_PROFILE_REPORT_AVAILABLE:
-                            st_profile_report(profile)
-                        else:
-                            # 如果streamlit_pandas_profiling不可用，直接显示HTML
-                            html_report = profile.to_html()
-                            st.components.v1.html(html_report, height=800, scrolling=True)
-                        
-                        # 下载报告
-                        html_report = profile.to_html()
-                        st.download_button(
-                            label="📥 下载Pandas Profiling报告",
-                            data=html_report,
-                            file_name="pandas_profiling_report.html",
-                            mime="text/html"
-                        )
-                        
-                    except Exception as e:
+            # 显示相关性矩阵
+            st.subheader("🔗 相关性分析")
+            numeric_data = data.select_dtypes(include=[np.number])
+            if len(numeric_data.columns) > 1:
+                corr_matrix = numeric_data.corr()
+                fig = px.imshow(corr_matrix, 
+                              title="数值变量相关性矩阵",
+                              color_continuous_scale='RdBu',
+                              aspect='auto')
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("数据中数值变量不足，无法进行相关性分析。")
                         st.error(f"❌ Pandas Profiling报告生成失败：{str(e)}")
 
 # 高级可视化页面

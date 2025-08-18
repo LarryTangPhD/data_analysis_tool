@@ -24,7 +24,7 @@
 - **数据处理**: Pandas, NumPy
 - **可视化**: Plotly, Seaborn, Matplotlib
 - **统计分析**: SciPy, Scikit-learn
-- **专业分析**: YData Profiling, Sweetviz
+- **⚠️ 兼容性**: 针对Python 3.13优化，部分专业分析工具暂时不可用
 
 ---
 
@@ -35,18 +35,19 @@ The Intelligent Data Analysis Platform is a professional-grade data analysis too
 
 ### 🚀 Core Features
 - **📁 Multi-format Data Upload**: Supports CSV, Excel, JSON, Parquet formats
-- **🔍 Automated Data Analysis**: Integrates YData Profiling, Sweetviz, Pandas Profiling
+- **🔍 Automated Data Analysis**: Basic analysis with statistical testing
 - **📈 Interactive Visualization**: 10 chart types with 3D visualization support
 - **📊 Statistical Analysis**: Descriptive statistics, hypothesis testing, correlation analysis
 - **🧹 Data Cleaning**: Missing value handling, outlier detection, data type conversion
 - **📋 Report Generation**: Automatic professional HTML analysis reports
+- **⚠️ Compatibility**: Optimized for Python 3.13, some advanced tools temporarily unavailable
 
 ### 🛠️ Tech Stack
 - **Frontend Framework**: Streamlit
 - **Data Processing**: Pandas, NumPy
 - **Visualization**: Plotly, Seaborn, Matplotlib
 - **Statistical Analysis**: SciPy, Scikit-learn
-- **Professional Analysis**: YData Profiling, Sweetviz
+- **⚠️ Compatibility**: Optimized for Python 3.13, some professional tools temporarily unavailable
 
 ---
 
@@ -85,10 +86,10 @@ streamlit run app.py
 - 数据质量评分 / Data quality scoring
 
 ### 🔍 自动数据分析 / Automated Data Analysis
-- **YData Profiling**: 最全面的自动化分析 / Most comprehensive automated analysis
-- **Sweetviz**: 美观的数据概览 / Beautiful data overview
-- **Pandas Profiling**: 经典分析报告 / Classic analysis reports
 - **基础分析**: 快速数据概览 / Quick data overview
+- **高级统计**: 描述性统计、假设检验 / Descriptive statistics, hypothesis testing
+- **数据质量评估**: 缺失值、异常值检测 / Missing values, outlier detection
+- **⚠️ 兼容性说明**: 部分高级分析功能因Python 3.13兼容性问题暂时不可用 / Some advanced analysis features temporarily unavailable due to Python 3.13 compatibility issues
 
 ### 📈 可视化功能 / Visualization Features
 - **基础图表**: 柱状图、折线图、散点图、饼图、直方图、箱线图、热力图、小提琴图
@@ -149,9 +150,10 @@ scipy>=1.9.0           # 统计分析 / Statistical analysis
 
 ### 专业分析组件 / Professional Analysis Components
 ```
-ydata-profiling>=4.5.0     # 自动化数据分析 / Automated data analysis
-sweetviz>=2.2.0            # 数据概览和比较 / Data overview and comparison
-pandas-profiling>=3.6.0    # 经典数据分析 / Classic data analysis
+# 由于Python 3.13兼容性问题，以下组件暂时不可用
+# ydata-profiling>=4.5.0     # 自动化数据分析 / Automated data analysis
+# sweetviz>=2.2.0            # 数据概览和比较 / Data overview and comparison
+# pandas-profiling>=3.6.0    # 经典数据分析 / Classic data analysis
 ```
 
 ### 可选组件 / Optional Components

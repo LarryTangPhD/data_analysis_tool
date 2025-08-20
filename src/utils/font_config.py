@@ -1,6 +1,7 @@
 """
 字体配置文件
 用于管理PDF导出功能的中文字体设置
+支持本地环境和云平台部署
 """
 
 import platform
@@ -31,12 +32,14 @@ class FontConfig:
                 "/System/Library/Fonts/STSong.ttc",             # 华文宋体
                 "/System/Library/Fonts/STKaiti.ttc",            # 华文楷体
             ]
-        else:  # Linux
+        else:  # Linux (包括云平台)
             return [
                 "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
                 "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
                 "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",
                 "/usr/share/fonts/truetype/arphic/uming.ttc",
+                "/usr/share/fonts/truetype/ubuntu/Ubuntu-R.ttf",
+                "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
             ]
     
     @staticmethod
@@ -52,30 +55,44 @@ class FontConfig:
     
     @staticmethod
     def register_chinese_font():
-        """注册中文字体"""
+        """注册中文字体 - 云平台兼容版本"""
         try:
             from reportlab.pdfbase import pdfmetrics
             from reportlab.pdfbase.ttfonts import TTFont
             from reportlab.pdfbase.cidfonts import UnicodeCIDFont
             
-            # 尝试注册系统中文字体
+            # 首先尝试注册系统中文字体
             font_path = FontConfig.find_available_font()
             
             if font_path:
                 try:
                     pdfmetrics.registerFont(TTFont('ChineseFont', font_path))
+                    print(f"成功注册系统字体: {font_path}")
                     return 'ChineseFont'
                 except Exception as e:
                     print(f"TTF字体注册失败: {e}")
             
-            # 如果无法注册TTF字体，使用UnicodeCIDFont
-            try:
-                pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))
-                return 'STSong-Light'
-            except Exception as e:
-                print(f"UnicodeCIDFont注册失败: {e}")
+            # 尝试注册reportlab内置的中文字体
+            builtin_fonts = [
+                'STSong-Light',      # 华文宋体
+                'STSongStd-Light',   # 华文宋体标准版
+                'HeiseiMin-W3',      # 平成明朝
+                'HeiseiKakuGo-W5',   # 平成角ゴシック
+                'HYSong',            # 华文宋体
+                'HYGothic-Medium',   # 华文黑体
+            ]
             
-            # 如果都失败，返回默认字体
+            for font_name in builtin_fonts:
+                try:
+                    pdfmetrics.registerFont(UnicodeCIDFont(font_name))
+                    print(f"成功注册内置字体: {font_name}")
+                    return font_name
+                except Exception as e:
+                    print(f"内置字体 {font_name} 注册失败: {e}")
+                    continue
+            
+            # 如果都失败，使用默认字体
+            print("所有中文字体注册失败，使用默认字体")
             return 'Helvetica'
             
         except ImportError:
@@ -150,6 +167,58 @@ class FontConfig:
             fontSize=10,
             spaceAfter=6,
             fontName=chinese_font_name,
+            leading=12
+        )
+        
+        return {
+            'title': title_style,
+            'heading2': heading2_style,
+            'heading3': heading3_style,
+            'normal': normal_style
+        }
+    
+    @staticmethod
+    def create_fallback_styles():
+        """创建备用样式（当无法使用中文字体时）"""
+        from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+        
+        styles = getSampleStyleSheet()
+        
+        # 使用默认字体创建样式
+        title_style = ParagraphStyle(
+            'FallbackTitle',
+            parent=styles['Heading1'],
+            fontSize=24,
+            spaceAfter=30,
+            alignment=1,  # 居中
+            fontName='Helvetica',
+            leading=28
+        )
+        
+        heading2_style = ParagraphStyle(
+            'FallbackHeading2',
+            parent=styles['Heading2'],
+            fontSize=16,
+            spaceAfter=12,
+            fontName='Helvetica',
+            leading=18
+        )
+        
+        heading3_style = ParagraphStyle(
+            'FallbackHeading3',
+            parent=styles['Heading3'],
+            fontSize=14,
+            spaceAfter=8,
+            fontName='Helvetica',
+            leading=16
+        )
+        
+        normal_style = ParagraphStyle(
+            'FallbackNormal',
+            parent=styles['Normal'],
+            fontSize=10,
+            spaceAfter=6,
+            fontName='Helvetica',
             leading=12
         )
         

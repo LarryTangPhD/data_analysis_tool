@@ -422,11 +422,15 @@ class ComprehensiveReportExporter:
             doc = SimpleDocTemplate(buffer, pagesize=A4)
             story = []
             
-            # 注册中文字体
-            chinese_font_name = FontConfig.register_chinese_font()
-            
-            # 获取样式
-            styles = FontConfig.create_chinese_styles(chinese_font_name)
+            # 注册中文字体 - 云平台兼容版本
+            try:
+                chinese_font_name = FontConfig.register_chinese_font()
+                styles = FontConfig.create_chinese_styles(chinese_font_name)
+            except Exception as e:
+                print(f"字体注册失败，使用备用方案: {e}")
+                # 使用备用方案
+                chinese_font_name = 'Helvetica'
+                styles = FontConfig.create_fallback_styles()
             
             # 标题
             story.append(Paragraph(FontConfig.clean_text_for_pdf("数据分析综合报告"), styles['title']))

@@ -840,6 +840,10 @@ def get_ai_assistant() -> Optional[DataAnalysisAI]:
     if ai_assistant is None:
         try:
             ai_assistant = DataAnalysisAI()
-        except ValueError:
+        except ValueError as e:
+            print(f"AI助手创建失败 - 配置错误: {e}")
+            return None
+        except Exception as e:
+            print(f"AI助手创建失败 - 其他错误: {e}")
             return None
     return ai_assistant

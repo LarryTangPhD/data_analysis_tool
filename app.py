@@ -34,6 +34,39 @@ from src.utils.ml_helpers import (
     detect_outliers_iqr, perform_statistical_tests, calculate_elbow_curve
 )
 from src.utils.ai_assistant import get_ai_assistant
+# 导入云端AI助手支持
+try:
+    from src.utils.ai_assistant_cloud import get_cloud_ai_assistant, get_ai_config_status
+    CLOUD_AI_AVAILABLE = True
+except ImportError:
+    CLOUD_AI_AVAILABLE = False
+
+# 导入报告导出功能
+from src.utils.report_exporter import ReportExporter, get_download_link, get_download_link_bytes
+# 导入综合报告导出组件
+from src.modules.comprehensive_report_export import render_comprehensive_report_export
+
+# 智能AI助手获取函数
+def get_smart_ai_assistant():
+    """
+    智能获取AI助手实例，优先使用云端配置
+    """
+    # 优先尝试云端AI助手
+    if CLOUD_AI_AVAILABLE:
+        try:
+            config_status = get_ai_config_status()
+            if config_status["api_key_available"]:
+                ai_assistant = get_cloud_ai_assistant()
+                if ai_assistant is not None:
+                    return ai_assistant
+        except Exception:
+            pass
+    
+    # 回退到本地AI助手
+    try:
+        return get_ai_assistant()
+    except Exception:
+        return None
 
 # 设置页面配置
 st.set_page_config(**PAGE_CONFIG)
@@ -237,7 +270,7 @@ elif page == "📁 数据上传":
             st.subheader("🤖 AI智能分析建议")
             
             # 检查AI助手是否可用
-            ai_assistant = get_ai_assistant()
+            ai_assistant = get_smart_ai_assistant()
             
             if ai_assistant is None:
                 st.warning("""
@@ -266,6 +299,78 @@ elif page == "📁 数据上传":
                             st.success("✅ AI分析完成！")
                             st.markdown("### 🤖 AI智能分析结果")
                             st.markdown(analysis_result)
+
+                            # 添加AI分析报告导出功能
+                            st.markdown("---")
+                            st.subheader("📄 导出AI分析报告")
+                            
+                            # 创建报告导出器
+                            exporter = ReportExporter()
+
+                            # 导出格式选择
+                            export_format = st.selectbox(
+                                "选择导出格式：",
+                                ["Markdown (.md)", "HTML (.html)", "JSON (.json)", "PDF (.pdf)"],
+                                key="export_format"
+                            )
+
+                            if st.button("📥 生成并下载AI分析报告", type="secondary"):
+                                with st.spinner("正在生成AI分析报告..."):
+                                    try:
+                                        if export_format == "Markdown (.md)":
+                                            report_content = exporter.export_markdown_report(
+                                                data_info, analysis_result, data
+                                            )
+                                            filename = f"AI分析报告_{exporter.timestamp}.md"
+                                            st.markdown(get_download_link(report_content, filename, "text/markdown"), unsafe_allow_html=True)
+
+                                        elif export_format == "HTML (.html)":
+                                            report_content = exporter.export_html_report(
+                                                data_info, analysis_result, data
+                                            )
+                                            filename = f"AI分析报告_{exporter.timestamp}.html"
+                                            st.markdown(get_download_link(report_content, filename, "text/html"), unsafe_allow_html=True)
+
+                                        elif export_format == "JSON (.json)":
+                                            report_content = exporter.export_json_report(
+                                                data_info, analysis_result, data
+                                            )
+                                            filename = f"AI分析报告_{exporter.timestamp}.json"
+                                            st.markdown(get_download_link(report_content, filename, "application/json"), unsafe_allow_html=True)
+
+                                        elif export_format == "PDF (.pdf)":
+                                            report_content = exporter.export_pdf_report(
+                                                data_info, analysis_result, data
+                                            )
+                                            filename = f"AI分析报告_{exporter.timestamp}.pdf"
+                                            st.markdown(get_download_link_bytes(report_content, filename, "application/pdf"), unsafe_allow_html=True)
+
+                                        st.success("✅ AI分析报告生成成功！点击上方链接下载。")
+
+                                    except Exception as e:
+                                        st.error(f"❌ AI分析报告生成失败：{str(e)}")
+
+                            # 添加完整分析报告导出功能
+                            st.markdown("---")
+                            st.subheader("📄 导出完整分析报告")
+                            st.markdown("""
+                            <div class="info-box">
+                            <h4>📋 完整报告包含：</h4>
+                            <ul>
+                            <li>📊 数据概览和质量评估</li>
+                            <li>🧹 数据清洗结果和处理历史</li>
+                            <li>📈 可视化图表和数据洞察</li>
+                            <li>📊 统计分析结果</li>
+                            <li>🤖 AI分析建议</li>
+                            <li>💼 商业价值分析</li>
+                            </ul>
+                            </div>
+                            """, unsafe_allow_html=True)
+                            
+                            # 调用综合报告导出功能
+                            render_comprehensive_report_export("专业模式")
+                            
+                            
                             
                         except Exception as e:
                             st.error(f"❌ AI分析失败：{str(e)}")

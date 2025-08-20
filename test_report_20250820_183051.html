@@ -1,0 +1,280 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据分析报告 - 20250820_183051</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .meta-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+            background: #f8f9fa;
+        }
+        .section h2 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #667eea;
+            color: white;
+        }
+        .data-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .quality-score {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #27ae60;
+        }
+        .ai-analysis {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 数据分析报告</h1>
+            <p>智能数据分析平台自动生成</p>
+        </div>
+        
+        <div class="meta-info">
+            <strong>生成时间:</strong> 2025年08月20日 18:30:51<br>
+            <strong>报告ID:</strong> 20250820_183051
+        </div>
+        
+        <div class="section">
+            <h2>📋 数据概览</h2>
+            <table class="data-table">
+                <tr>
+                    <th>指标</th>
+                    <th>数值</th>
+                </tr>
+                <tr>
+                    <td>数据行数</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>数据列数</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>内存使用</td>
+                    <td>0.00 MB</td>
+                </tr>
+                <tr>
+                    <td>缺失值总数</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>重复行数</td>
+                    <td>0</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>🤖 AI智能分析</h2>
+            <div class="ai-analysis">
+                <br>## 数据质量评估 (85/100分)<br><br>### 数据完整性评分<br>- **数据完整性**: 95分 - 数据基本完整，只有少量缺失值<br>- **数据一致性**: 90分 - 数据类型一致，格式规范<br>- **潜在问题**: 发现2个缺失值，需要进一步处理<br><br>### 数据特征分析<br>- **数据集类型**: 横截面数据<br>- **主要变量类型**: 数值型、分类型、布尔型<br>- **数据规模**: 小规模数据集，适合快速分析<br><br>### 清洗建议<br>1. **缺失值处理**: 建议使用均值填充或删除缺失行<br>2. **数据类型转换**: 当前数据类型合理，无需转换<br>3. **异常值检测**: 建议进行IQR方法检测异常值<br><br>### 分析方向推荐<br>1. **探索性数据分析**: 适合进行描述性统计<br>2. **可视化分析**: 建议创建分布图和相关性热图<br>3. **建模可能性**: 数据规模较小，适合简单模型<br><br>### 下一步行动建议<br>1. **优先处理**: 处理缺失值问题<br>2. **推荐流程**: 数据清洗 → 探索性分析 → 可视化 → 建模<br>3. **注意事项**: 注意数据隐私保护<br>        
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📈 数据预览</h2>
+            <h3>前5行数据</h3>
+            <table border="1" class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>D</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.0</td>
+      <td>a</td>
+      <td>1.1</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2.0</td>
+      <td>b</td>
+      <td>2.2</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>NaN</td>
+      <td>c</td>
+      <td>3.3</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4.0</td>
+      <td>d</td>
+      <td>4.4</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5.0</td>
+      <td>e</td>
+      <td>5.5</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+            
+            <h3>数据统计信息</h3>
+            <table border="1" class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>C</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>9.000000</td>
+      <td>9.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>5.777778</td>
+      <td>5.877778</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>3.073181</td>
+      <td>3.360721</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>1.000000</td>
+      <td>1.100000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>4.000000</td>
+      <td>3.300000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>6.000000</td>
+      <td>5.500000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>8.000000</td>
+      <td>8.800000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>10.000000</td>
+      <td>10.000000</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+        
+        <div class="section">
+            <h2>📊 数据质量评估</h2>
+            <p class="quality-score">综合评分: 98.5/100</p>
+            <p><strong>数据质量评估:</strong> 优秀 - 数据质量很高，适合直接进行分析</p>
+        </div>
+        
+        <div class="section">
+            <h2>🔍 关键发现</h2>
+            <ul>
+                <li><strong>数据规模:</strong> 这是一个包含10行4列的数据集</li>
+                <li><strong>数据质量:</strong> 优秀 - 数据质量很高，适合直接进行分析</li>
+                <li><strong>主要特征:</strong> 小规模数据集、低维特征、包含缺失值</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>📝 建议与下一步</h2>
+            <h3>数据清洗建议</h3>
+            <ul>
+                <li>处理缺失值</li>
+                <li>检查异常值</li>
+                <li>数据类型转换</li>
+            </ul>
+            
+            <h3>分析方向建议</h3>
+            <ul>
+                <li>探索性数据分析</li>
+                <li>可视化分析</li>
+                <li>统计建模</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>报告由智能数据分析平台自动生成 | 2025年08月20日</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -17,6 +17,10 @@ warnings.filterwarnings('ignore')
 # 导入普通模式AI助手
 from src.utils.ai_assistant_intermediate import get_intermediate_ai_assistant
 from src.config.settings import ANALYSIS_MODES
+# 导入报告导出组件
+from src.modules.report_export_component import render_report_export_section
+# 导入综合报告导出组件
+from src.modules.comprehensive_report_export import render_comprehensive_report_export
 
 def create_research_sample_data():
     """创建科研示例数据集"""
@@ -235,6 +239,21 @@ def display_research_workbench():
                             
                             with st.expander("🎯 分析方法推荐", expanded=True):
                                 st.markdown(recommendation)
+                            
+                            # 添加报告导出功能
+                            try:
+                                render_report_export_section(
+                                    data=data,
+                                    ai_analysis=recommendation,
+                                    mode="中级模式",
+                                    additional_context={
+                                        "analysis_step": "分析方法推荐",
+                                        "data_context": data_context,
+                                        "analysis_suggestion": analysis_suggestion
+                                    }
+                                )
+                            except Exception as export_error:
+                                st.error(f"报告导出功能初始化失败: {str(export_error)}")
                                 
                         except Exception as e:
                             st.error(f"❌ AI分析失败：{str(e)}")
@@ -254,6 +273,21 @@ def display_research_workbench():
                             )
                             st.success("✅ AI结果解释")
                             st.markdown(interpretation)
+                            
+                            # 添加报告导出功能
+                            try:
+                                render_report_export_section(
+                                    data=st.session_state.research_data,
+                                    ai_analysis=interpretation,
+                                    mode="中级模式",
+                                    additional_context={
+                                        "analysis_step": "结果解释",
+                                        "analysis_results": st.session_state.analysis_results
+                                    }
+                                )
+                            except Exception as export_error:
+                                st.error(f"报告导出功能初始化失败: {str(export_error)}")
+                            
                         except Exception as e:
                             st.error(f"❌ AI解释失败：{str(e)}")
         
@@ -268,6 +302,22 @@ def display_research_workbench():
                             )
                             st.success("✅ AI报告优化")
                             st.markdown(optimization)
+                            
+                            # 添加报告导出功能
+                            try:
+                                render_report_export_section(
+                                    data=st.session_state.research_data,
+                                    ai_analysis=optimization,
+                                    mode="中级模式",
+                                    additional_context={
+                                        "analysis_step": "报告优化",
+                                        "data_info": f"样本量{len(st.session_state.research_data)}",
+                                        "analysis_results": st.session_state.get('analysis_results', {})
+                                    }
+                                )
+                            except Exception as export_error:
+                                st.error(f"报告导出功能初始化失败: {str(export_error)}")
+                            
                         except Exception as e:
                             st.error(f"❌ AI优化失败：{str(e)}")
     else:
@@ -2345,6 +2395,26 @@ def display_report_generation():
     # 生成报告
     if st.button("📄 生成学术报告", use_container_width=True, key="generate_academic_report"):
         generate_academic_report(data, report_type, study_title, researcher, date, sample_size)
+    
+    # 综合报告导出功能
+    st.markdown("---")
+    st.subheader("📄 导出完整分析报告")
+    st.markdown("""
+    <div class="info-box">
+    <h4>📋 完整报告包含：</h4>
+    <ul>
+    <li>📊 数据概览和质量评估</li>
+    <li>🧹 数据清洗结果和处理历史</li>
+    <li>📈 可视化图表和数据洞察</li>
+    <li>📊 统计分析结果</li>
+    <li>🤖 AI分析建议</li>
+    <li>🔬 科研分析成果</li>
+    </ul>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # 调用综合报告导出功能
+    render_comprehensive_report_export("中级模式")
     
     # 返回工作台
     if st.button("🏠 返回工作台", use_container_width=True, key="report_return_workbench"):

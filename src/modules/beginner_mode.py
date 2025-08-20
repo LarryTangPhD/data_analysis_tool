@@ -12,6 +12,10 @@ warnings.filterwarnings('ignore')
 
 # 导入新手模式AI助手
 from src.utils.ai_assistant_beginner import get_beginner_ai_assistant
+# 导入报告导出组件
+from src.modules.report_export_component import render_report_export_section
+# 导入综合报告导出组件
+from src.modules.comprehensive_report_export import render_comprehensive_report_export
 
 def create_sample_data():
     """创建示例数据集"""
@@ -2261,6 +2265,26 @@ def display_report():
     </div>
     """, unsafe_allow_html=True)
     
+    # 综合报告导出功能
+    st.markdown("---")
+    st.subheader("📄 导出完整分析报告")
+    st.markdown("""
+    <div class="info-box">
+    <h4>📋 完整报告包含：</h4>
+    <ul>
+    <li>📊 数据概览和质量评估</li>
+    <li>🧹 数据清洗结果和处理历史</li>
+    <li>📈 可视化图表和数据洞察</li>
+    <li>📊 统计分析结果</li>
+    <li>🤖 AI分析建议</li>
+    <li>📚 学习进度和成果总结</li>
+    </ul>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # 调用综合报告导出功能
+    render_comprehensive_report_export("新手模式")
+    
     # 重新开始按钮
     if st.button("🔄 重新开始分析", use_container_width=True):
         st.session_state.current_step = 1
@@ -2331,6 +2355,21 @@ def display_report():
                     st.markdown("### 🤖 AI导师回答")
                     st.markdown(answer)
                     
+                    # 添加报告导出功能
+                    try:
+                        render_report_export_section(
+                            data=data,
+                            ai_analysis=answer,
+                            mode="新手模式",
+                            additional_context={
+                                "analysis_step": "分析报告",
+                                "user_question": user_question,
+                                "learning_progress": st.session_state.learning_progress
+                            }
+                        )
+                    except Exception as export_error:
+                        st.error(f"报告导出功能初始化失败: {str(export_error)}")
+                    
                 except Exception as e:
                     st.error(f"❌ AI回答失败：{str(e)}")
         
@@ -2346,6 +2385,20 @@ def display_report():
                     st.success("✅ 学习指导生成完成！")
                     st.markdown("### 📚 个性化学习指导")
                     st.markdown(guidance)
+                    
+                    # 添加报告导出功能
+                    try:
+                        render_report_export_section(
+                            data=data,
+                            ai_analysis=guidance,
+                            mode="新手模式",
+                            additional_context={
+                                "analysis_step": "学习指导",
+                                "learning_progress": st.session_state.learning_progress
+                            }
+                        )
+                    except Exception as export_error:
+                        st.error(f"报告导出功能初始化失败: {str(export_error)}")
                     
                 except Exception as e:
                     st.error(f"❌ 学习指导生成失败：{str(e)}")
@@ -2369,6 +2422,21 @@ def display_report():
                         st.success("✅ 概念解释完成！")
                         st.markdown("### 📖 概念解释")
                         st.markdown(explanation)
+                        
+                        # 添加报告导出功能
+                        try:
+                            render_report_export_section(
+                                data=data,
+                                ai_analysis=explanation,
+                                mode="新手模式",
+                                additional_context={
+                                    "analysis_step": "概念解释",
+                                    "concept": concept,
+                                    "learning_progress": st.session_state.learning_progress
+                                }
+                            )
+                        except Exception as export_error:
+                            st.error(f"报告导出功能初始化失败: {str(export_error)}")
                         
                     except Exception as e:
                         st.error(f"❌ 概念解释失败：{str(e)}")

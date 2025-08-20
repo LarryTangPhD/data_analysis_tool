@@ -5,14 +5,14 @@
 
 # 页面配置
 PAGE_CONFIG = {
-    "page_title": "智能数据分析平台",
-    "page_icon": "📊",
+    "page_title": "数眸 - 智能数据分析平台",
+    "page_icon": "👁️",
     "layout": "wide",
     "initial_sidebar_state": "expanded",
     "menu_items": {
         'Get Help': 'https://docs.streamlit.io/',
         'Report a bug': None,
-        'About': '# 智能数据分析平台\n基于Streamlit构建的数据分析应用'
+        'About': '# 数眸 - 智能数据分析平台\n让数据洞察如眸般清澈明亮'
     }
 }
 
@@ -23,6 +23,7 @@ NAV_PAGES = [
     "📁 数据上传", 
     "🧹 数据清洗",
     "🔍 自动数据分析",
+    "👁️ 数据洞察",
     "📈 高级可视化",
     "📊 统计分析",
     "🤖 机器学习",
@@ -34,7 +35,7 @@ ANALYSIS_MODES = {
     "beginner": {
         "name": "新手模式",
         "description": "适合数据分析初学者，提供简化的操作界面和基础功能",
-        "icon": "🌱",
+        "icon": "👁️",
         "features": [
             "简化的数据上传界面",
             "基础数据预览",
@@ -45,7 +46,7 @@ ANALYSIS_MODES = {
     "intermediate": {
         "name": "普通模式", 
         "description": "适合有一定数据分析经验的用户，提供完整的功能集",
-        "icon": "🚀",
+        "icon": "👁️‍🗨️",
         "features": [
             "完整的数据处理功能",
             "多种可视化选项",
@@ -56,7 +57,7 @@ ANALYSIS_MODES = {
     "professional": {
         "name": "专业模式",
         "description": "适合专业数据分析师，提供高级功能和完整工具集",
-        "icon": "⚡",
+        "icon": "🔍",
         "features": [
             "高级数据处理工具",
             "专业可视化图表",
@@ -67,37 +68,37 @@ ANALYSIS_MODES = {
     }
 }
 
-# 自定义CSS样式 - Material Design 3
+# 自定义CSS样式 - Material Design 3 + 数眸主题
 CUSTOM_CSS = """
 <style>
-    /* Material Design 3 设计系统 - 现代高级配色 */
+    /* Material Design 3 设计系统 - 数眸主题配色 */
     :root {
-        /* 主色调 - 深蓝紫渐变系统 */
-        --md-primary: #6366F1;
-        --md-primary-container: linear-gradient(135deg, #E0E7FF 0%, #C7D2FE 100%);
+        /* 主色调 - 深邃眼眸蓝渐变系统 */
+        --md-primary: #1E40AF;
+        --md-primary-container: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
         --md-on-primary: #FFFFFF;
-        --md-on-primary-container: #1E1B4B;
+        --md-on-primary-container: #1E3A8A;
         
-        /* 次要色调 - 青绿渐变系统 */
-        --md-secondary: #10B981;
+        /* 次要色调 - 清澈青绿渐变系统 */
+        --md-secondary: #059669;
         --md-secondary-container: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
         --md-on-secondary: #FFFFFF;
         --md-on-secondary-container: #064E3B;
         
-        /* 第三色调 - 橙金渐变系统 */
-        --md-tertiary: #F59E0B;
+        /* 第三色调 - 智慧金橙渐变系统 */
+        --md-tertiary: #D97706;
         --md-tertiary-container: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
         --md-on-tertiary: #FFFFFF;
         --md-on-tertiary-container: #451A03;
         
-        /* 语义色彩 - 现代感配色 */
-        --md-success: #10B981;
+        /* 语义色彩 - 数眸主题配色 */
+        --md-success: #059669;
         --md-success-container: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
-        --md-warning: #F59E0B;
+        --md-warning: #D97706;
         --md-warning-container: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
-        --md-error: #EF4444;
+        --md-error: #DC2626;
         --md-error-container: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
-        --md-info: #3B82F6;
+        --md-info: #2563EB;
         --md-info-container: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
         
         /* 中性色 - 高级灰调系统 */

@@ -75,7 +75,8 @@ st.set_page_config(**PAGE_CONFIG)
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
 # 主标题
-st.markdown('<h1 class="main-header">📊 智能数据分析平台</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">👁️ 数眸 - 智能数据分析平台</h1>', unsafe_allow_html=True)
+st.markdown('<p class="brand-slogan">让数据洞察如眸般清澈明亮</p>', unsafe_allow_html=True)
 
 # 顶部横向导航
 # 初始化页面状态和模式选择
@@ -197,7 +198,7 @@ elif page == "📁 数据上传":
             data = load_data(uploaded_file)
             st.session_state.data = data
             
-            st.success(f"✅ 数据上传成功！共 {len(data)} 行，{len(data.columns)} 列")
+            st.success(f"✅ 数眸数据上传成功！共 {len(data)} 行，{len(data.columns)} 列")
             
             # 显示数据基本信息
             data_info = get_data_info(data)
@@ -296,8 +297,8 @@ elif page == "📁 数据上传":
                         try:
                             analysis_result = ai_assistant.analyze_uploaded_data(data, data_info)
                             
-                            st.success("✅ AI分析完成！")
-                            st.markdown("### 🤖 AI智能分析结果")
+                            st.success("✅ 数眸AI分析完成！")
+                            st.markdown("### 🤖 数眸AI智能分析结果")
                             st.markdown(analysis_result)
 
                             # 添加AI分析报告导出功能
@@ -345,7 +346,7 @@ elif page == "📁 数据上传":
                                             filename = f"AI分析报告_{exporter.timestamp}.pdf"
                                             st.markdown(get_download_link_bytes(report_content, filename, "application/pdf"), unsafe_allow_html=True)
 
-                                        st.success("✅ AI分析报告生成成功！点击上方链接下载。")
+                                        st.success("✅ 数眸AI分析报告生成成功！点击上方链接下载。")
 
                                     except Exception as e:
                                         st.error(f"❌ AI分析报告生成失败：{str(e)}")
@@ -373,7 +374,7 @@ elif page == "📁 数据上传":
                             
                             
                         except Exception as e:
-                            st.error(f"❌ AI分析失败：{str(e)}")
+                            st.error(f"❌ 数眸AI分析失败：{str(e)}")
                 
                 # AI智能问答
                 st.write("**💡 有数据分析问题？问问AI助手：**")
@@ -390,12 +391,12 @@ elif page == "📁 数据上传":
                             data_context = f"数据集包含{len(data)}行{len(data.columns)}列，数据类型包括{', '.join(data.dtypes.value_counts().index.astype(str))}"
                             answer = ai_assistant.answer_data_question(user_question, data_context, "数据上传")
                             
-                            st.success("✅ AI回答完成！")
-                            st.markdown("### 🤖 AI回答")
+                            st.success("✅ 数眸AI回答完成！")
+                            st.markdown("### 🤖 数眸AI回答")
                             st.markdown(answer)
                             
                         except Exception as e:
-                            st.error(f"❌ AI回答失败：{str(e)}")
+                            st.error(f"❌ 数眸AI回答失败：{str(e)}")
             
         except Exception as e:
             st.error(f"❌ 数据读取失败：{str(e)}")
@@ -481,7 +482,7 @@ elif page == "🧹 数据清洗":
                 data_cleaned = data.copy()
                 data_cleaned = handle_missing_values(data_cleaned, missing_strategy)
                 st.session_state.data_cleaned = data_cleaned
-                st.success("✅ 缺失值处理完成！")
+                st.success("✅ 数眸缺失值处理完成！")
         
         # 重复值处理
         st.write("**2. 重复值处理**")
@@ -493,7 +494,7 @@ elif page == "🧹 数据清洗":
                     data_cleaned = data.copy()
                 data_cleaned = handle_duplicates(data_cleaned)
                 st.session_state.data_cleaned = data_cleaned
-                st.success("✅ 重复值处理完成！")
+                st.success("✅ 数眸重复值处理完成！")
         
         # 异常值处理
         st.write("**3. 异常值处理**")
@@ -510,7 +511,7 @@ elif page == "🧹 数据清洗":
                     data_cleaned = data.copy()
                 data_cleaned = handle_outliers(data_cleaned, outlier_strategy)
                 st.session_state.data_cleaned = data_cleaned
-                st.success("✅ 异常值处理完成！")
+                st.success("✅ 数眸异常值处理完成！")
         
         # 显示清洗结果
         if st.session_state.data_cleaned is not None:
@@ -558,15 +559,15 @@ elif page == "🧹 数据清洗":
                     try:
                         cleaning_advice = ai_assistant.suggest_cleaning_strategy(data, cleaning_issue)
                         
-                        st.success("✅ AI清洗建议完成！")
-                        st.markdown("### 🤖 AI清洗策略建议")
+                        st.success("✅ 数眸AI清洗建议完成！")
+                        st.markdown("### 🤖 数眸AI清洗策略建议")
                         st.markdown(cleaning_advice)
                         
                     except Exception as e:
-                        st.error(f"❌ AI建议失败：{str(e)}")
+                        st.error(f"❌ 数眸AI建议失败：{str(e)}")
             
             # AI智能问答
-            st.write("**💡 有数据清洗问题？问问AI助手：**")
+            st.write("**💡 有数据清洗问题？问问数眸AI助手：**")
             user_question = st.text_area(
                 "请输入您的问题：",
                 placeholder="例如：如何处理这个数据集的缺失值？异常值检测用什么方法？",
@@ -580,12 +581,12 @@ elif page == "🧹 数据清洗":
                         data_context = f"数据集包含{len(data)}行{len(data.columns)}列，缺失值{data.isnull().sum().sum()}个，重复行{data.duplicated().sum()}个"
                         answer = ai_assistant.answer_data_question(user_question, data_context, "数据清洗")
                         
-                        st.success("✅ AI回答完成！")
-                        st.markdown("### 🤖 AI回答")
+                        st.success("✅ 数眸AI回答完成！")
+                        st.markdown("### 🤖 数眸AI回答")
                         st.markdown(answer)
                         
                     except Exception as e:
-                        st.error(f"❌ AI回答失败：{str(e)}")
+                        st.error(f"❌ 数眸AI回答失败：{str(e)}")
 
 elif page == "🔍 自动数据分析":
     st.markdown('<h2 class="sub-header">🔍 自动数据分析</h2>', unsafe_allow_html=True)
@@ -1438,5 +1439,537 @@ elif page == "📋 报告生成":
                     except Exception as e:
                         st.error(f"❌ AI回答失败：{str(e)}")
 
+elif page == "👁️ 数据洞察":
+    st.markdown('<h2 class="sub-header">👁️ 数据洞察</h2>', unsafe_allow_html=True)
+    
+    # 数眸品牌介绍
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
+        padding: 25px;
+        border-radius: 15px;
+        color: white;
+        margin-bottom: 25px;
+        box-shadow: 0 8px 32px rgba(30, 64, 175, 0.3);
+    ">
+        <h3 style="color: white; margin-bottom: 20px; text-align: center;">👁️ 数眸 - 让数据洞察如眸般清澈明亮</h3>
+        <p style="font-size: 18px; line-height: 1.8; margin-bottom: 20px; text-align: center;">
+            <strong>💡 核心洞察功能：</strong><br>
+            通过AI智能分析，发现数据中的隐藏模式、异常趋势和商业价值，让复杂的数据变得清晰可见。
+        </p>
+        <div style="display: flex; gap: 25px; margin-bottom: 20px;">
+            <div style="flex: 1; background: rgba(255,255,255,0.15); padding: 20px; border-radius: 12px; backdrop-filter: blur(10px);">
+                <h4 style="color: #FDE68A; margin-bottom: 15px;">🔍 模式发现</h4>
+                <ul style="margin: 0; padding-left: 20px; font-size: 15px;">
+                    <li>隐藏关联关系</li>
+                    <li>周期性模式</li>
+                    <li>趋势变化点</li>
+                    <li>异常值识别</li>
+                </ul>
+            </div>
+            <div style="flex: 1; background: rgba(255,255,255,0.15); padding: 20px; border-radius: 12px; backdrop-filter: blur(10px);">
+                <h4 style="color: #A7F3D0; margin-bottom: 15px;">💡 智能洞察</h4>
+                <ul style="margin: 0; padding-left: 20px; font-size: 15px;">
+                    <li>业务价值分析</li>
+                    <li>风险预警提示</li>
+                    <li>机会识别</li>
+                    <li>决策建议</li>
+                </ul>
+            </div>
+            <div style="flex: 1; background: rgba(255,255,255,0.15); padding: 20px; border-radius: 12px; backdrop-filter: blur(10px);">
+                <h4 style="color: #FECACA; margin-bottom: 15px;">📊 可视化洞察</h4>
+                <ul style="margin: 0; padding-left: 20px; font-size: 15px;">
+                    <li>交互式图表</li>
+                    <li>动态仪表板</li>
+                    <li>实时监控</li>
+                    <li>故事化展示</li>
+                </ul>
+            </div>
+        </div>
+        <p style="font-size: 16px; margin: 0; text-align: center; opacity: 0.9;">
+            <strong>🎯 数眸使命：</strong> 让每个人都能像专家一样洞察数据，发现价值
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    if not hasattr(st.session_state, 'data') or st.session_state.data is None:
+        st.warning("⚠️ 请先上传数据文件")
+    else:
+        data = st.session_state.data
+        
+        # 洞察类型选择
+        insight_type = st.selectbox(
+            "选择洞察类型",
+            ["🔍 数据模式发现", "📈 趋势分析", "🎯 异常检测", "💡 商业洞察", "📊 综合洞察报告"],
+            help="选择您想要进行的洞察分析类型"
+        )
+        
+        if insight_type == "🔍 数据模式发现":
+            render_pattern_discovery(data)
+        elif insight_type == "📈 趋势分析":
+            render_trend_analysis(data)
+        elif insight_type == "🎯 异常检测":
+            render_anomaly_detection(data)
+        elif insight_type == "💡 商业洞察":
+            render_business_insights(data)
+        elif insight_type == "📊 综合洞察报告":
+            render_comprehensive_insights(data)
+
 # 渲染页脚
 render_footer()
+
+# 数据洞察功能函数
+def render_pattern_discovery(data):
+    """数据模式发现"""
+    st.subheader("🔍 数据模式发现")
+    st.info("数眸正在为您分析数据模式...")
+    # 这里可以添加具体的模式发现逻辑
+
+def render_trend_analysis(data):
+    """趋势分析"""
+    st.subheader("📈 趋势分析")
+    st.info("数眸正在为您分析数据趋势...")
+    # 这里可以添加具体的趋势分析逻辑
+
+def render_anomaly_detection(data):
+    """异常检测"""
+    st.subheader("🎯 异常检测")
+    st.info("数眸正在为您检测异常值...")
+    # 这里可以添加具体的异常检测逻辑
+
+def render_business_insights(data):
+    """商业洞察"""
+    st.subheader("💡 商业洞察")
+    st.info("数眸正在为您生成商业洞察...")
+    # 这里可以添加具体的商业洞察逻辑
+
+def render_comprehensive_insights(data):
+    """综合洞察报告"""
+    st.subheader("📊 综合洞察报告")
+    st.info("数眸正在为您生成综合洞察报告...")
+    # 这里可以添加具体的报告生成逻辑
+
+# 数据洞察功能函数
+def render_pattern_discovery(data):
+    """数据模式发现"""
+    st.subheader("🔍 数据模式发现")
+    
+    # 相关性模式发现
+    st.write("**1. 相关性模式分析**")
+    numeric_cols = data.select_dtypes(include=[np.number]).columns.tolist()
+    
+    if len(numeric_cols) >= 2:
+        # 计算相关性矩阵
+        corr_matrix = data[numeric_cols].corr()
+        
+        # 找出强相关性
+        strong_corr = []
+        for i in range(len(corr_matrix.columns)):
+            for j in range(i+1, len(corr_matrix.columns)):
+                corr_value = corr_matrix.iloc[i, j]
+                if abs(corr_value) > 0.7:
+                    strong_corr.append({
+                        'var1': corr_matrix.columns[i],
+                        'var2': corr_matrix.columns[j],
+                        'correlation': corr_value
+                    })
+        
+        if strong_corr:
+            st.success(f"✅ 数眸发现 {len(strong_corr)} 个强相关性模式")
+            for corr in strong_corr:
+                st.write(f"• {corr['var1']} 与 {corr['var2']} 的相关系数为 {corr['correlation']:.3f}")
+        else:
+            st.info("ℹ️ 数眸未发现强相关性模式")
+        
+        # 相关性热力图
+        fig = px.imshow(corr_matrix, 
+                       title="相关性模式热力图",
+                       color_continuous_scale='RdBu_r',
+                       aspect='auto')
+        st.plotly_chart(fig, use_container_width=True)
+    
+    # 聚类模式发现
+    st.write("**2. 聚类模式分析**")
+    if len(numeric_cols) >= 2:
+        selected_cols = st.multiselect("选择用于聚类的特征", numeric_cols, default=numeric_cols[:3])
+        
+        if selected_cols and len(selected_cols) >= 2:
+            if st.button("🔍 数眸发现聚类模式"):
+                with st.spinner("数眸正在分析聚类模式..."):
+                    # 数据预处理
+                    X = data[selected_cols].dropna()
+                    
+                    if len(X) > 0:
+                        # 标准化
+                        from sklearn.preprocessing import StandardScaler
+                        scaler = StandardScaler()
+                        X_scaled = scaler.fit_transform(X)
+                        
+                        # 使用肘部法则确定最佳聚类数
+                        from sklearn.cluster import KMeans
+                        inertias = []
+                        K_range = range(2, min(11, len(X)//10 + 1))
+                        
+                        for k in K_range:
+                            kmeans = KMeans(n_clusters=k, random_state=42)
+                            kmeans.fit(X_scaled)
+                            inertias.append(kmeans.inertia_)
+                        
+                        # 绘制肘部图
+                        fig_elbow = px.line(x=list(K_range), y=inertias, 
+                                          title="肘部法则 - 确定最佳聚类数",
+                                          labels={'x': '聚类数', 'y': '惯性'})
+                        st.plotly_chart(fig_elbow, use_container_width=True)
+                        
+                        # 执行聚类
+                        optimal_k = 3  # 可以根据肘部图自动确定
+                        kmeans = KMeans(n_clusters=optimal_k, random_state=42)
+                        clusters = kmeans.fit_predict(X_scaled)
+                        
+                        # 可视化聚类结果
+                        if len(selected_cols) >= 2:
+                            fig_cluster = px.scatter(
+                                x=X.iloc[:, 0], y=X.iloc[:, 1],
+                                color=clusters,
+                                title=f"聚类模式发现 ({selected_cols[0]} vs {selected_cols[1]})",
+                                labels={'x': selected_cols[0], 'y': selected_cols[1], 'color': '聚类'}
+                            )
+                            st.plotly_chart(fig_cluster, use_container_width=True)
+                        
+                        st.success(f"✅ 数眸发现 {optimal_k} 个聚类模式")
+
+def render_trend_analysis(data):
+    """趋势分析"""
+    st.subheader("📈 趋势分析")
+    
+    numeric_cols = data.select_dtypes(include=[np.number]).columns.tolist()
+    
+    if len(numeric_cols) == 0:
+        st.warning("⚠️ 数据中没有数值型列，无法进行趋势分析")
+        return
+    
+    # 选择分析列
+    selected_col = st.selectbox("选择要分析的列", numeric_cols)
+    
+    if selected_col:
+        # 基础趋势分析
+        values = data[selected_col].dropna()
+        
+        if len(values) > 0:
+            # 计算趋势
+            x = np.arange(len(values))
+            slope, intercept, r_value, p_value, std_err = stats.linregress(x, values)
+            
+            # 趋势判断
+            if slope > 0:
+                trend_direction = "上升趋势"
+                trend_icon = "📈"
+            elif slope < 0:
+                trend_direction = "下降趋势"
+                trend_icon = "📉"
+            else:
+                trend_direction = "无明显趋势"
+                trend_icon = "➡️"
+            
+            # 显示趋势信息
+            col1, col2, col3, col4 = st.columns(4)
+            with col1:
+                st.metric("趋势方向", f"{trend_icon} {trend_direction}")
+            with col2:
+                st.metric("趋势强度", f"{abs(slope):.4f}")
+            with col3:
+                st.metric("相关系数", f"{r_value:.3f}")
+            with col4:
+                st.metric("显著性", f"{p_value:.4f}")
+            
+            # 趋势可视化
+            fig = go.Figure()
+            
+            # 原始数据
+            fig.add_trace(go.Scatter(
+                x=list(range(len(values))),
+                y=values,
+                mode='lines+markers',
+                name='原始数据',
+                line=dict(color='#1E40AF', width=2)
+            ))
+            
+            # 趋势线
+            trend_line = slope * np.arange(len(values)) + intercept
+            fig.add_trace(go.Scatter(
+                x=list(range(len(values))),
+                y=trend_line,
+                mode='lines',
+                name='趋势线',
+                line=dict(color='#DC2626', width=3, dash='dash')
+            ))
+            
+            fig.update_layout(
+                title=f"{selected_col} 趋势分析",
+                xaxis_title="数据点",
+                yaxis_title=selected_col,
+                showlegend=True
+            )
+            
+            st.plotly_chart(fig, use_container_width=True)
+            
+            # 趋势解释
+            if p_value < 0.05:
+                st.success(f"✅ 数眸发现趋势显著 (p < 0.05)，{selected_col} 呈现{trend_direction}")
+            else:
+                st.warning(f"⚠️ 数眸分析显示趋势不显著 (p ≥ 0.05)，{selected_col} 的{trend_direction}可能不具有统计意义")
+
+def render_anomaly_detection(data):
+    """异常检测"""
+    st.subheader("🎯 异常检测")
+    
+    numeric_cols = data.select_dtypes(include=[np.number]).columns.tolist()
+    
+    if len(numeric_cols) == 0:
+        st.warning("⚠️ 数据中没有数值型列，无法进行异常检测")
+        return
+    
+    # 选择检测方法
+    detection_method = st.selectbox(
+        "选择异常检测方法",
+        ["IQR方法", "Z-score方法", "百分位法", "隔离森林"]
+    )
+    
+    selected_col = st.selectbox("选择要检测的列", numeric_cols)
+    
+    if selected_col and detection_method:
+        if st.button("🎯 数眸开始异常检测"):
+            with st.spinner("数眸正在检测异常值..."):
+                values = data[selected_col].dropna()
+                
+                if len(values) > 0:
+                    anomalies = []
+                    
+                    if detection_method == "IQR方法":
+                        Q1 = values.quantile(0.25)
+                        Q3 = values.quantile(0.75)
+                        IQR = Q3 - Q1
+                        lower_bound = Q1 - 1.5 * IQR
+                        upper_bound = Q3 + 1.5 * IQR
+                        anomalies = values[(values < lower_bound) | (values > upper_bound)]
+                        
+                    elif detection_method == "Z-score方法":
+                        z_scores = np.abs(stats.zscore(values))
+                        anomalies = values[z_scores > 3]
+                        
+                    elif detection_method == "百分位法":
+                        lower_bound = values.quantile(0.01)
+                        upper_bound = values.quantile(0.99)
+                        anomalies = values[(values < lower_bound) | (values > upper_bound)]
+                    
+                    # 显示异常检测结果
+                    st.success(f"✅ 数眸检测到 {len(anomalies)} 个异常值")
+                    
+                    if len(anomalies) > 0:
+                        st.write("**异常值详情：**")
+                        st.dataframe(anomalies.to_frame(), use_container_width=True)
+                        
+                        # 异常值可视化
+                        fig = go.Figure()
+                        
+                        # 正常值
+                        normal_values = values[~values.isin(anomalies)]
+                        fig.add_trace(go.Scatter(
+                            x=list(range(len(normal_values))),
+                            y=normal_values,
+                            mode='markers',
+                            name='正常值',
+                            marker=dict(color='#059669', size=6)
+                        ))
+                        
+                        # 异常值
+                        if len(anomalies) > 0:
+                            anomaly_indices = [i for i, v in enumerate(values) if v in anomalies]
+                            fig.add_trace(go.Scatter(
+                                x=anomaly_indices,
+                                y=anomalies,
+                                mode='markers',
+                                name='异常值',
+                                marker=dict(color='#DC2626', size=10, symbol='x')
+                            ))
+                        
+                        fig.update_layout(
+                            title=f"{selected_col} 异常值检测结果",
+                            xaxis_title="数据点",
+                            yaxis_title=selected_col
+                        )
+                        
+                        st.plotly_chart(fig, use_container_width=True)
+
+def render_business_insights(data):
+    """商业洞察"""
+    st.subheader("💡 商业洞察")
+    
+    # 数据概览洞察
+    st.write("**1. 数据概览洞察**")
+    
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric("数据规模", f"{len(data)} 行")
+    with col2:
+        st.metric("特征数量", f"{len(data.columns)} 列")
+    with col3:
+        st.metric("数据完整性", f"{((len(data) - data.isnull().sum().sum()) / (len(data) * len(data.columns)) * 100):.1f}%")
+    with col4:
+        st.metric("数据质量", f"{calculate_data_quality_score(data):.1f}/100")
+    
+    # 数据类型洞察
+    st.write("**2. 数据类型洞察**")
+    dtype_counts = data.dtypes.value_counts()
+    
+    fig = px.pie(
+        values=dtype_counts.values,
+        names=dtype_counts.index.astype(str),
+        title="数据类型分布"
+    )
+    st.plotly_chart(fig, use_container_width=True)
+    
+    # 数值型数据洞察
+    numeric_cols = data.select_dtypes(include=[np.number]).columns.tolist()
+    if len(numeric_cols) > 0:
+        st.write("**3. 数值型数据洞察**")
+        
+        # 选择关键指标
+        key_metrics = st.multiselect("选择关键业务指标", numeric_cols, default=numeric_cols[:3])
+        
+        if key_metrics:
+            # 计算关键统计信息
+            insights_data = []
+            for col in key_metrics:
+                values = data[col].dropna()
+                if len(values) > 0:
+                    insights_data.append({
+                        '指标': col,
+                        '平均值': values.mean(),
+                        '中位数': values.median(),
+                        '标准差': values.std(),
+                        '最小值': values.min(),
+                        '最大值': values.max(),
+                        '变异系数': values.std() / values.mean() if values.mean() != 0 else 0
+                    })
+            
+            if insights_data:
+                insights_df = pd.DataFrame(insights_data)
+                st.dataframe(insights_df, use_container_width=True)
+                
+                # 业务洞察建议
+                st.write("**4. 数眸商业洞察建议**")
+                
+                for insight in insights_data:
+                    st.write(f"**{insight['指标']}：**")
+                    
+                    # 变异系数分析
+                    if insight['变异系数'] > 1:
+                        st.write(f"• 数眸发现数据波动较大 (变异系数: {insight['变异系数']:.2f})，建议关注异常值")
+                    elif insight['变异系数'] < 0.1:
+                        st.write(f"• 数眸分析显示数据相对稳定 (变异系数: {insight['变异系数']:.2f})，变化较小")
+                    
+                    # 分布偏斜分析
+                    values = data[insight['指标']].dropna()
+                    skewness = values.skew()
+                    if abs(skewness) > 1:
+                        if skewness > 0:
+                            st.write(f"• 数眸发现数据右偏分布 (偏度: {skewness:.2f})，存在较多高值")
+                        else:
+                            st.write(f"• 数眸发现数据左偏分布 (偏度: {skewness:.2f})，存在较多低值")
+                    
+                    st.write("---")
+
+def render_comprehensive_insights(data):
+    """综合洞察报告"""
+    st.subheader("📊 综合洞察报告")
+    
+    if st.button("📊 数眸生成综合洞察报告"):
+        with st.spinner("数眸正在生成综合洞察报告..."):
+            # 创建综合报告
+            report_content = generate_comprehensive_insights_report(data)
+            
+            # 显示报告
+            st.markdown(report_content, unsafe_allow_html=True)
+            
+            # 下载报告
+            st.download_button(
+                label="📥 下载数眸洞察报告",
+                data=report_content,
+                file_name="数眸_数据洞察报告.html",
+                mime="text/html"
+            )
+
+def generate_comprehensive_insights_report(data):
+    """生成综合洞察报告"""
+    numeric_cols = data.select_dtypes(include=[np.number]).columns.tolist()
+    categorical_cols = data.select_dtypes(include=['object', 'category']).columns.tolist()
+    
+    report = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>数眸 - 数据洞察报告</title>
+        <style>
+            body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; line-height: 1.6; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }}
+            .container {{ max-width: 1200px; margin: 0 auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }}
+            h1 {{ color: #1E40AF; text-align: center; border-bottom: 3px solid #1E40AF; padding-bottom: 20px; font-size: 2.5em; }}
+            h2 {{ color: #2563EB; border-bottom: 2px solid #DBEAFE; padding-bottom: 10px; margin-top: 30px; }}
+            h3 {{ color: #3B82F6; margin-top: 25px; }}
+            .insight-card {{ background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%); padding: 20px; margin: 20px 0; border-radius: 15px; border-left: 5px solid #1E40AF; }}
+            .metric {{ background: #f8f9fa; padding: 15px; margin: 15px 0; border-radius: 10px; border-left: 4px solid #059669; }}
+            .highlight {{ background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #D97706; }}
+            .footer {{ text-align: center; color: #6B7280; margin-top: 50px; padding-top: 20px; border-top: 2px solid #E5E7EB; }}
+            .brand {{ text-align: center; margin-bottom: 30px; }}
+            .brand-logo {{ font-size: 3em; margin-bottom: 10px; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="brand">
+                <div class="brand-logo">👁️</div>
+                <h1>数眸 - 数据洞察报告</h1>
+                <p style="font-size: 1.2em; color: #6B7280; text-align: center;">让数据洞察如眸般清澈明亮</p>
+            </div>
+            
+            <div class="insight-card">
+                <h2>📊 数据概览洞察</h2>
+                <div class="metric">
+                    <strong>数据集规模：</strong> {len(data)} 行 × {len(data.columns)} 列<br>
+                    <strong>数据完整性：</strong> {((len(data) - data.isnull().sum().sum()) / (len(data) * len(data.columns)) * 100):.1f}%<br>
+                    <strong>数据质量评分：</strong> {calculate_data_quality_score(data):.1f}/100<br>
+                    <strong>数值型特征：</strong> {len(numeric_cols)} 个<br>
+                    <strong>分类型特征：</strong> {len(categorical_cols)} 个
+                </div>
+            </div>
+            
+            <div class="insight-card">
+                <h2>🔍 关键洞察发现</h2>
+                <div class="highlight">
+                    <h3>数据质量洞察</h3>
+                    <p>• 缺失值总数：{data.isnull().sum().sum()} 个</p>
+                    <p>• 重复行数：{data.duplicated().sum()} 行</p>
+                    <p>• 数据类型分布：{', '.join([f'{str(dtype)}({count})' for dtype, count in data.dtypes.value_counts().items()])}</p>
+                </div>
+            </div>
+            
+            <div class="insight-card">
+                <h2>💡 业务价值洞察</h2>
+                <div class="metric">
+                    <h3>数据特征分析</h3>
+                    <p>• 数据集包含 {len(data)} 条记录，适合进行统计分析</p>
+                    <p>• 具有 {len(numeric_cols)} 个数值型特征，可用于建模分析</p>
+                    <p>• 具有 {len(categorical_cols)} 个分类型特征，可用于分组分析</p>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <p>👁️ 数眸 - 智能数据分析平台 | 生成时间: {pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S")}</p>
+                <p>让数据洞察如眸般清澈明亮</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    
+    return report

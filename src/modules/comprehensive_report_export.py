@@ -409,39 +409,41 @@ class ComprehensiveReportExporter:
             from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
             from reportlab.lib.units import inch
             from reportlab.lib import colors
+            from reportlab.pdfbase import pdfmetrics
+            from reportlab.pdfbase.ttfonts import TTFont
+            from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+            from src.utils.font_config import FontConfig
             from io import BytesIO
+            import platform
+            import os
             
             # 创建PDF文档
             buffer = BytesIO()
             doc = SimpleDocTemplate(buffer, pagesize=A4)
             story = []
             
+            # 注册中文字体
+            chinese_font_name = FontConfig.register_chinese_font()
+            
             # 获取样式
-            styles = getSampleStyleSheet()
-            title_style = ParagraphStyle(
-                'CustomTitle',
-                parent=styles['Heading1'],
-                fontSize=24,
-                spaceAfter=30,
-                alignment=1
-            )
+            styles = FontConfig.create_chinese_styles(chinese_font_name)
             
             # 标题
-            story.append(Paragraph("📊 数据分析综合报告", title_style))
+            story.append(Paragraph(FontConfig.clean_text_for_pdf("数据分析综合报告"), styles['title']))
             story.append(Spacer(1, 20))
             
             # 基本信息
-            story.append(Paragraph("📋 数据概览", styles['Heading2']))
+            story.append(Paragraph(FontConfig.clean_text_for_pdf("数据概览"), styles['heading2']))
             story.append(Spacer(1, 12))
             
             data_info = analysis_data.get('data_info', {})
             overview_data = [
-                ['指标', '数值'],
-                ['数据行数', str(data_info.get('rows', 'N/A'))],
-                ['数据列数', str(data_info.get('columns', 'N/A'))],
-                ['内存使用', f"{data_info.get('memory_usage', 0):.2f} MB"],
-                ['缺失值总数', str(data_info.get('missing_values', 'N/A'))],
-                ['重复行数', str(data_info.get('duplicate_rows', 'N/A'))]
+                [FontConfig.clean_text_for_pdf('指标'), FontConfig.clean_text_for_pdf('数值')],
+                [FontConfig.clean_text_for_pdf('数据行数'), str(data_info.get('rows', 'N/A'))],
+                [FontConfig.clean_text_for_pdf('数据列数'), str(data_info.get('columns', 'N/A'))],
+                [FontConfig.clean_text_for_pdf('内存使用'), f"{data_info.get('memory_usage', 0):.2f} MB"],
+                [FontConfig.clean_text_for_pdf('缺失值总数'), str(data_info.get('missing_values', 'N/A'))],
+                [FontConfig.clean_text_for_pdf('重复行数'), str(data_info.get('duplicate_rows', 'N/A'))]
             ]
             
             overview_table = Table(overview_data)
@@ -449,8 +451,9 @@ class ComprehensiveReportExporter:
                 ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
                 ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
                 ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                ('FONTSIZE', (0, 0), (-1, 0), 14),
+                ('FONTNAME', (0, 0), (-1, -1), chinese_font_name),
+                ('FONTSIZE', (0, 0), (-1, 0), 12),
+                ('FONTSIZE', (0, 1), (-1, -1), 10),
                 ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
                 ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
                 ('GRID', (0, 0), (-1, -1), 1, colors.black)
@@ -459,40 +462,40 @@ class ComprehensiveReportExporter:
             story.append(Spacer(1, 20))
             
             # 数据清洗结果
-            story.append(Paragraph("🧹 数据清洗结果", styles['Heading2']))
+            story.append(Paragraph(FontConfig.clean_text_for_pdf("数据清洗结果"), styles['heading2']))
             story.append(Spacer(1, 12))
             cleaning_results = analysis_data.get('cleaning_results', {})
             if cleaning_results:
                 for key, value in cleaning_results.items():
-                    story.append(Paragraph(f"• {key}: {value}", styles['Normal']))
+                    story.append(Paragraph(FontConfig.clean_text_for_pdf(f"• {key}: {value}"), styles['normal']))
             else:
-                story.append(Paragraph("无清洗结果", styles['Normal']))
+                story.append(Paragraph(FontConfig.clean_text_for_pdf("无清洗结果"), styles['normal']))
             story.append(Spacer(1, 20))
             
             # 统计分析结果
-            story.append(Paragraph("📈 统计分析结果", styles['Heading2']))
+            story.append(Paragraph(FontConfig.clean_text_for_pdf("统计分析结果"), styles['heading2']))
             story.append(Spacer(1, 12))
             statistical_results = analysis_data.get('statistical_results', {})
             if statistical_results:
                 for analysis_type, results in statistical_results.items():
-                    story.append(Paragraph(f"**{analysis_type}分析**:", styles['Heading3']))
+                    story.append(Paragraph(FontConfig.clean_text_for_pdf(f"{analysis_type}分析:"), styles['heading3']))
                     if isinstance(results, dict):
                         for key, value in results.items():
-                            story.append(Paragraph(f"  - {key}: {value}", styles['Normal']))
+                            story.append(Paragraph(FontConfig.clean_text_for_pdf(f"  - {key}: {value}"), styles['normal']))
                     else:
-                        story.append(Paragraph(f"  {results}", styles['Normal']))
+                        story.append(Paragraph(FontConfig.clean_text_for_pdf(f"  {results}"), styles['normal']))
             else:
-                story.append(Paragraph("无统计分析结果", styles['Normal']))
+                story.append(Paragraph(FontConfig.clean_text_for_pdf("无统计分析结果"), styles['normal']))
             story.append(Spacer(1, 20))
             
             # 分析总结
-            story.append(Paragraph("📝 分析总结", styles['Heading2']))
+            story.append(Paragraph(FontConfig.clean_text_for_pdf("分析总结"), styles['heading2']))
             story.append(Spacer(1, 12))
-            story.append(Paragraph("主要发现:", styles['Heading3']))
-            story.append(Paragraph(self._generate_key_findings(analysis_data), styles['Normal']))
+            story.append(Paragraph(FontConfig.clean_text_for_pdf("主要发现:"), styles['heading3']))
+            story.append(Paragraph(FontConfig.clean_text_for_pdf(self._generate_key_findings(analysis_data)), styles['normal']))
             story.append(Spacer(1, 12))
-            story.append(Paragraph("建议与下一步:", styles['Heading3']))
-            story.append(Paragraph(self._generate_recommendations(analysis_data), styles['Normal']))
+            story.append(Paragraph(FontConfig.clean_text_for_pdf("建议与下一步:"), styles['heading3']))
+            story.append(Paragraph(FontConfig.clean_text_for_pdf(self._generate_recommendations(analysis_data)), styles['normal']))
             
             # 生成PDF
             doc.build(story)
@@ -501,6 +504,8 @@ class ComprehensiveReportExporter:
             
         except ImportError:
             raise ImportError("PDF导出需要安装reportlab库: pip install reportlab")
+        except Exception as e:
+            raise Exception(f"PDF生成失败: {str(e)}")
 
 def render_comprehensive_report_export(mode: str):
     """

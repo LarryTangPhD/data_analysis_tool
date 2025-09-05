@@ -23,7 +23,6 @@ memory-profiler>=0.61.0
 
 # 高级可视化
 plotly-express>=0.4.1
-plotly-subplots>=0.1.0
 
 # 时间序列分析
 statsmodels>=0.14.0
